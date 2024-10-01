@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Warnings, Messages, and Errors</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Warnings, Messages, and Errors</h1>
+
+
+
+<p>This vignette provides documentation for the different warnings and
+messages that are implemented for the package. Results of calls (eg
+printing of data frames following <code>set_contrasts</code>) will be
+hidden, but warnings and messages will still be shown. Code chunks will
+be self-contained, so bear with a little repetitiveness. I will
+primarily be using the <code>sum_code</code> function because it is the
+shortest one to write.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(contrastable)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(rlang)</span></code></pre></div>
+<div id="common-messages" class="section level2">
+<h2>Common Messages</h2>
+<p>User will be notified if a non-factor column is coerced to a factor
+with <code>set_contrasts</code> and <code>enlist_contrasts</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> sum_code)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span></code></pre></div>
+<p>User will be notified if there exist other factors in the dataframe
+that have not been set in a call to <code>set_contrasts</code> or
+<code>enlist_contrasts</code>. Unordered factors are color coded in
+blue, while ordered factors are colored red. The default contrasts from
+<code>options(&quot;contrasts&quot;)</code> are also displayed and color coded
+accordingly.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> mtcars</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>my_data<span class="sc">$</span>gear <span class="ot">&lt;-</span> <span class="fu">ordered</span>(my_data<span class="sc">$</span>gear)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>my_data<span class="sc">$</span>carb <span class="ot">&lt;-</span> <span class="fu">factor</span>(my_data<span class="sc">$</span>carb)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>my_data<span class="sc">$</span>cyl <span class="ot">&lt;-</span> <span class="fu">factor</span>(my_data<span class="sc">$</span>cyl)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">set_contrasts</span>(my_data, cyl <span class="sc">~</span> sum_code)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; Expect contr.treatment or contr.poly for unset factors: gear carb</span></span></code></pre></div>
+<p>Ordered factors by default use <code>contr.poly</code> and return
+coefficient estimates interpretable as nth-degree polynomial trends.
+Typically, contrast matrices are set for unordered factors, so ordered
+factors are a bit of a special case. So, user will be notified if
+setting the contrasts for an ordered factor with
+<code>set_contrasts</code> or <code>enlist_contrasts</code></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> mtcars</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>my_data<span class="sc">$</span>gear <span class="ot">&lt;-</span> <span class="fu">ordered</span>(my_data<span class="sc">$</span>gear)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">set_contrasts</span>(my_data, gear <span class="sc">~</span> sum_code)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; These factors are ordered, you may lose contr.poly: gear</span></span></code></pre></div>
+</div>
+<div id="warnings" class="section level2">
+<h2>Warnings</h2>
+<p>User will be warned if attempting to set contrasts on a factor with
+only one level. If the user sets contrasts for multiple variables, any
+variables with more than one level will successfully be computed.
+However, the variables with only one level will just show no results.
+Note the output in the example below.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">foo =</span> <span class="fu">factor</span>(<span class="st">&quot;A&quot;</span>),</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                      <span class="at">boo =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)))</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="fu">enlist_contrasts</span>(my_data, foo <span class="sc">~</span> sum_code, boo <span class="sc">~</span> sum_code)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; Warning: Contrasts undefined for factors with only one level: foo</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; $boo</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt;    C</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; B -1</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; C  1</span></span></code></pre></div>
+<p>Related to the above, if the user only sets contrasts on factors that
+have only one level, an error will be thrown. The above warning will
+also be shown.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">foo =</span> <span class="fu">factor</span>(<span class="st">&quot;A&quot;</span>),</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                      <span class="at">boo =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)))</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">enlist_contrasts</span>(my_data, foo <span class="sc">~</span> sum_code))</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; Expect contr.treatment or contr.poly for unset factors: boo</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; Warning: Contrasts undefined for factors with only one level: foo</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; Error in enlist_contrasts(my_data, foo ~ sum_code) : </span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt;   No factors with more than 1 level found</span></span></code></pre></div>
+<p>Contrastable provides some flexibility in how contrasts are passed to
+formulas. Under the hood, methods are defined for the following object
+classes:</p>
+<ul>
+<li>matrix</li>
+<li>symbol/name</li>
+<li>function</li>
+<li>hypr</li>
+</ul>
+<p>You’ll receive a warning if you use something else and the default
+contrast (depending on ordered or unordered) will be used instead.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>my_matrix <span class="ot">&lt;-</span> <span class="fu">sum_code</span>(<span class="dv">3</span>)  <span class="co"># current class is &quot;matrix&quot; &quot;array&quot;</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">class</span>(my_matrix) <span class="ot">&lt;-</span> <span class="st">&quot;foo&quot;</span> <span class="co"># now class is &quot;foo&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> my_matrix) <span class="co"># idk what to do with &quot;foo&quot; objects</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; Warning in use_contrasts.default(factor_col = get(params[[&quot;factor_col&quot;]], :</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; Can&#39;t set contrasts with object of class foo. Using unordered default</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; contr.treatment</span></span></code></pre></div>
+<p>So long as the object <em>inherits</em> one of the above classes
+though it will work as expected. Accordingly, note that no class
+coercion happens here.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">class</span>(my_matrix) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;matrix&quot;</span>, <span class="st">&quot;array&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> my_matrix) <span class="co"># idk what &quot;foo&quot; is but i know &quot;matrix&quot;!</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span></code></pre></div>
+<p>Note that if you accidentally quote the function name, you will
+receive an error instead because it thinks you’re trying to set
+contrasts with an atomic character object.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> <span class="st">&quot;sum_code&quot;</span>)) <span class="co"># sum_code shouldnt be in quotes</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span></code></pre></div>
+<p>The same issue can commonly occur if you don’t order the right hand
+side correctly. The first term should always be a contrast-generating
+function or a variable name that’s been assigned an object of the above
+classes. Failure to do this can lead to other kinds of errors depending
+on what the first element to the right hand side is. I’ve tried to
+document a few cases of illformedness, but I can’t do every case.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> <span class="dv">4</span> <span class="sc">+</span> sum_code)) <span class="co"># bad!</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> sum_code <span class="sc">+</span> <span class="dv">4</span>)) <span class="co"># good!</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co"># These give different kinds of errors, all are ill-formed</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> <span class="sc">+</span><span class="dv">4</span> <span class="sc">+</span> sum_code)) </span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>) <span class="sc">+</span> sum_code)) </span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">+</span> sum_code)) </span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt; Warning in is.na(params[[which_param]]): is.na() applied to non-(list or</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="co">#&gt; vector) of type &#39;symbol&#39;</span></span></code></pre></div>
+<div id="hypr-integration" class="section level3">
+<h3>hypr integration</h3>
+<p>hypr is another package for contrast coding but focuses on setting
+the desired comparisons for a factor manually. The philosophy there is
+that <em>all</em> comparisons should be explicitly written down, while
+the philosophy with this package is that well-defined contrast schemes
+should be implemented in a way that is deterministic and not prone to
+typing errors. Accordingly, the special syntax this package provides is
+ignored when using hypr objects.</p>
+<p>Note that the examples here are set to not be run so that you’re not
+forced to have the hypr package installed in order to install the
+package/build the vignette.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">library</span>(hypr)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">foo =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)))</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>hypr_object <span class="ot">&lt;-</span> hypr<span class="sc">::</span><span class="fu">hypr</span>(A <span class="sc">~</span> B, A <span class="sc">~</span> C)</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="fu">set_contrasts</span>(my_data, foo <span class="sc">~</span> hypr_object <span class="sc">+</span> <span class="st">&quot;B&quot;</span> <span class="sc">*</span> <span class="st">&quot;B&quot;</span> <span class="sc">-</span> <span class="st">&quot;C&quot;</span>)</span></code></pre></div>
+<pre><code>Warning messages:
+1: In use_contrasts.hypr(factor_col = get(params[[&quot;factor_col&quot;]], model_data),  :
+  reference_level ignored when using hypr object
+2: In use_contrasts.hypr(factor_col = get(params[[&quot;factor_col&quot;]], model_data),  :
+  set_intercept ignored when using hypr object
+3: In use_contrasts.hypr(factor_col = get(params[[&quot;factor_col&quot;]], model_data),  :
+  drop_trends ignored when using hypr object</code></pre>
+<p>hypr objects don’t need access to the levels in a factor, so there’s
+an opportunity for mismatches in level names to arise. The matrix might
+still work out to be what you intend, but this isn’t guaranteed.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">foo =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)))</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>hypr_object <span class="ot">&lt;-</span> hypr<span class="sc">::</span><span class="fu">hypr</span>(varA <span class="sc">~</span> varB, varA <span class="sc">~</span> varC)</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="fu">set_contrasts</span>(my_data, foo <span class="sc">~</span> hypr_object)<span class="sc">$</span>foo</span></code></pre></div>
+<pre><code>Warning message:
+In use_contrasts.hypr(factor_col = get(params[[&quot;factor_col&quot;]], model_data),  :
+  Levels in hypr object not found in factor column `foo`: varA, varB, varC
+Contrasts may be misspecified.</code></pre>
+<p>Generally, this package isn’t really designed with the hypr-user in
+mind. But, so long as you’re mindful of the level names and the number
+of levels, then you can plug in hypr objects freely in conjunction with
+other methods. This is helpful if you need to use a custom matrix for
+just one variable, but the rest can use “standard” contrasts.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">foo =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)),</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>                      <span class="at">boo =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)))</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>hypr_object <span class="ot">&lt;-</span> hypr<span class="sc">::</span><span class="fu">hypr</span>(A <span class="sc">~</span> B, A <span class="sc">~</span> C)</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="fu">enlist_contrasts</span>(my_data, foo <span class="sc">~</span> hypr_object, boo <span class="sc">~</span> sum_code)</span></code></pre></div>
+</div>
+<div id="glimpse_contrasts-safety-checks" class="section level3">
+<h3>glimpse_contrasts safety checks</h3>
+<p><code>glimpse_contrasts</code> has a fairly extensive set of
+warnings, so I’m giving it its own subsection. Broadly, these warnings
+relate to mismatches between what the user defines in a series of
+formulas and what is actually set on the provided dataframe. Special to
+these warnings is that they will provide written out R code that the
+user can copy and paste from the console to fix the issue— where “fix”
+refers to “setting the contrasts to the dataframe explicitly with
+<code>set_contrasts</code>”.</p>
+<p>User will be warned if the contrast matrix for a factor in a
+dataframe does not match the contrasts defined by the provided
+formulas.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">foo =</span> <span class="fu">factor</span>(<span class="st">&quot;A&quot;</span>),</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>                      <span class="at">boo =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)))</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="fu">glimpse_contrasts</span>(my_data, boo <span class="sc">~</span> sum_code)</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt; Warning: Contrasts for these factors in `my_data` don&#39;t match formulas:</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt;  - boo</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; To fix, be sure to run:</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; my_data &lt;- set_contrasts(my_data, </span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt;                          boo ~ sum_code)</span></span></code></pre></div>
+<p>Note that you can also define the contrast formulas in a list, and
+this will be reflected in the warning as well.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">foo =</span> <span class="fu">factor</span>(<span class="st">&quot;A&quot;</span>),</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>                      <span class="at">boo =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)))</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="co"># Define our contrasts outside the call</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>clist <span class="ot">&lt;-</span> <span class="fu">list</span>(boo <span class="sc">~</span> sum_code)</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="fu">glimpse_contrasts</span>(my_data, clist) <span class="co"># Note the final line in the warning</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="co">#&gt; Warning: Contrasts for these factors in `my_data` don&#39;t match formulas:</span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="co">#&gt;  - boo</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="co">#&gt; To fix, be sure to run:</span></span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a><span class="co">#&gt; my_data &lt;- set_contrasts(my_data, clist)</span></span></code></pre></div>
+<p>Using some of the contrast-generating matrix functions in this
+package <em>with</em> <code>set_contrasts</code> or
+<code>enlist_contrasts</code> will automatically set the comparison
+labels (i.e., the column names of the contrast matrix). However, using
+these functions on their own will not specify the labels (because they
+merely return matrices given some arbitrary number of levels). So, if
+you manually set the contrasts to a factor without also defining the
+comparison labels, then the labels will be missing. When using the same
+contrast generating function in <code>glimpse_contrast</code>, the user
+will be warned that the <em>comparison labels don’t match</em> (even
+though the <em>contrast matrices</em> do).</p>
+<p>Here’s an example when the labels are missing:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> mtcars</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>my_data<span class="sc">$</span>cyl <span class="ot">&lt;-</span> <span class="fu">factor</span>(my_data<span class="sc">$</span>cyl)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co"># This will erase the column names</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="fu">contrasts</span>(my_data<span class="sc">$</span>cyl) <span class="ot">&lt;-</span> <span class="fu">helmert_code</span>(<span class="dv">3</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="fu">glimpse_contrasts</span>(my_data, cyl <span class="sc">~</span> helmert_code)</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co">#&gt; Warning: Comparison labels for contrasts in `my_data` don&#39;t match:</span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="co">#&gt;  - cyl   (expected `&lt;6, &lt;8` but found ``)</span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co">#&gt; To fix, be sure to run:</span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co">#&gt; my_data &lt;- set_contrasts(my_data, </span></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt;                          cyl ~ helmert_code)</span></span></code></pre></div>
+<p>And here’s an example when they exist but don’t match</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> mtcars</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>my_data<span class="sc">$</span>cyl <span class="ot">&lt;-</span> <span class="fu">factor</span>(my_data<span class="sc">$</span>cyl) <span class="co"># contr.treatment by default</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="fu">glimpse_contrasts</span>(my_data, cyl <span class="sc">~</span> treatment_code <span class="sc">|</span> <span class="fu">c</span>(<span class="st">&quot;6vs4&quot;</span>, <span class="st">&quot;8vs4&quot;</span>))</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="co">#&gt; Warning: Comparison labels for contrasts in `my_data` don&#39;t match:</span></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="co">#&gt;  - cyl   (expected `6vs4, 8vs4` but found `6, 8`)</span></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="co">#&gt; To fix, be sure to run:</span></span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="co">#&gt; my_data &lt;- set_contrasts(my_data, </span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a><span class="co">#&gt;                          cyl ~ treatment_code | c(&quot;6vs4&quot;, &quot;8vs4&quot;))</span></span></code></pre></div>
+<p>The user will be warned when specifying contrasts with
+<code>glimpse_contrasts</code> for a variable that isn’t a factor. So,
+<code>set_contrasts</code> will coerce the variable to a factor, but
+<code>glimpse_contrasts</code> doesn’t modify the dataframe it’s
+given.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> mtcars</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="fu">glimpse_contrasts</span>(my_data, cyl <span class="sc">~</span> sum_code)</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="co">#&gt; Warning: These vars in `my_data` are not factors:</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="co">#&gt;  - cyl</span></span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a><span class="co">#&gt; To fix, be sure to run:</span></span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co">#&gt; my_data &lt;- set_contrasts(my_data, </span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="co">#&gt;                          cyl ~ sum_code)</span></span></code></pre></div>
+<p>ALL of the above described warnings can occur at the same time. They
+are combined into a single warning. Note that when warned about the
+<em>comparison labels</em> not matching, the numeric matrices are
+nonetheless the same. Typically, when the matrices are different, the
+labels will <em>also</em> be different, so the latter isn’t reported
+when the matrices differ to save space.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> mtcars</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>my_data<span class="sc">$</span>cyl <span class="ot">&lt;-</span> <span class="fu">factor</span>(my_data<span class="sc">$</span>cyl) <span class="co"># contr.treatment by default</span></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>my_data<span class="sc">$</span>carb <span class="ot">&lt;-</span> <span class="fu">factor</span>(my_data<span class="sc">$</span>carb)</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="fu">contrasts</span>(my_data<span class="sc">$</span>cyl) <span class="ot">&lt;-</span> <span class="fu">sum_code</span>(<span class="dv">3</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>my_data<span class="sc">$</span>am <span class="ot">&lt;-</span> <span class="fu">factor</span>(my_data<span class="sc">$</span>am)</span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a><span class="fu">glimpse_contrasts</span>(my_data, </span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a>                  cyl <span class="sc">~</span> sum_code, </span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a>                  carb <span class="sc">~</span> sum_code, </span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a>                  gear <span class="sc">~</span> sum_code,</span>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a>                  am <span class="sc">~</span> treatment_code <span class="sc">|</span> <span class="fu">c</span>(<span class="st">&quot;diffLabel&quot;</span>))</span>
+<span id="cb21-12"><a href="#cb21-12" tabindex="-1"></a><span class="co">#&gt; Warning: These vars in `my_data` are not factors:</span></span>
+<span id="cb21-13"><a href="#cb21-13" tabindex="-1"></a><span class="co">#&gt;  - gear</span></span>
+<span id="cb21-14"><a href="#cb21-14" tabindex="-1"></a><span class="co">#&gt; Contrasts for these factors in `my_data` don&#39;t match formulas:</span></span>
+<span id="cb21-15"><a href="#cb21-15" tabindex="-1"></a><span class="co">#&gt;  - carb</span></span>
+<span id="cb21-16"><a href="#cb21-16" tabindex="-1"></a><span class="co">#&gt; Comparison labels for contrasts in `my_data` don&#39;t match:</span></span>
+<span id="cb21-17"><a href="#cb21-17" tabindex="-1"></a><span class="co">#&gt;  - cyl   (expected `6, 8` but found ``)</span></span>
+<span id="cb21-18"><a href="#cb21-18" tabindex="-1"></a><span class="co">#&gt;  - am    (expected `diffLabel` but found `1`)</span></span>
+<span id="cb21-19"><a href="#cb21-19" tabindex="-1"></a><span class="co">#&gt; To fix, be sure to run:</span></span>
+<span id="cb21-20"><a href="#cb21-20" tabindex="-1"></a><span class="co">#&gt; my_data &lt;- set_contrasts(my_data, </span></span>
+<span id="cb21-21"><a href="#cb21-21" tabindex="-1"></a><span class="co">#&gt;                          cyl ~ sum_code,</span></span>
+<span id="cb21-22"><a href="#cb21-22" tabindex="-1"></a><span class="co">#&gt;                          carb ~ sum_code,</span></span>
+<span id="cb21-23"><a href="#cb21-23" tabindex="-1"></a><span class="co">#&gt;                          gear ~ sum_code,</span></span>
+<span id="cb21-24"><a href="#cb21-24" tabindex="-1"></a><span class="co">#&gt;                          am ~ treatment_code | c(&quot;diffLabel&quot;))</span></span></code></pre></div>
+<p>Currently, <code>glimpse_contrasts</code> depends on being provided
+with the desired contrast formulas/matrices to provide a summary table
+correctly. If you set the contrasts, then try to summarize the dataframe
+without the the same formulas, then you’ll get a warning that the factor
+(whether unordered or ordered) does not match the default contrasts that
+would normally be expected. In the example below, the contrasts are set
+to <code>sum_code</code>, but because the default contrasts for
+unordered factors is <code>contr.treatment</code>, the contrast matrices
+won’t match for <code>my_data$cyl</code>. The scheme will be reported as
+<code>&quot;???&quot;</code></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> sum_code, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="fu">glimpse_contrasts</span>(my_data)</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="co">#&gt; Warning in .warn_if_nondefault(default_contrasts, unset_factors, factor_sizes, : Unset factors do not use default contr.treatment or contr.poly. Glimpse table may be unreliable.</span></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="co">#&gt;  - cyl</span></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="co">#&gt;     factor n level_names scheme reference  intercept orthogonal centered</span></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a><span class="co">#&gt; cyl    cyl 3     4, 6, 8    ???         4 grand mean         NA       NA</span></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="co">#&gt;     dropped_trends explicitly_set</span></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="co">#&gt; cyl             NA          FALSE</span></span></code></pre></div>
+<p>Currently, there is not an elegant way for
+<code>glimpse_contrasts</code> to check what the contrast scheme is
+based solely on the resulting matrix. Moreover, many contrast schemes
+are the same when the number of levels is 2, meaning that a matrix of
+<code>+.5/-.5</code> could be <code>scaled_sum_code</code> or
+<code>helmert_code</code> (among others). I’m also reluctant to add
+additional attributes to the dataframe for the sole purpose of
+<code>glimpse_contrasts</code> being able to summarize things.</p>
+<p>The most robust solution if you want to make use of
+<code>glimpse_contrasts</code> is to specify a list of contrast
+matrices, then pass the list to <code>set_contrasts</code> and
+<code>glimpse_contrasts</code>.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>contrast_list <span class="ot">&lt;-</span> <span class="fu">list</span>(cyl <span class="sc">~</span> scaled_sum_code, </span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>                      carb <span class="sc">~</span> sum_code, </span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>                      gear <span class="sc">~</span> sum_code,</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>                      am <span class="sc">~</span> treatment_code <span class="sc">|</span> <span class="fu">c</span>(<span class="st">&quot;diffLabel&quot;</span>))</span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">set_contrasts</span>(mtcars, contrast_list, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="fu">glimpse_contrasts</span>(my_data, contrast_list)</span></code></pre></div>
+</div>
+</div>
+<div id="errors" class="section level2">
+<h2>Errors</h2>
+<p>Here are some common errors, though not all of them are errors from
+contrastable per se.</p>
+<p>You’ll receive an error if you use a matrix that’s a different size
+from what the contrast matrix should be. Specifically, contrasts
+matrices for a factor with n levels should be size
+<code>nx(n-1)</code>.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>my_matrix <span class="ot">&lt;-</span> <span class="fu">sum_code</span>(<span class="dv">4</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> my_matrix)) <span class="co"># cyl has 3 levels, not 4</span></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="co">#&gt; Error in use_contrasts.matrix(factor_col = get(params[[&quot;factor_col&quot;]],  : </span></span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a><span class="co">#&gt;   Matrix given to code_by is size 4x3 but factor_col contrast matrix is size 3x2.</span></span></code></pre></div>
+<p>You’ll receive an error if you try to set the reference level (or
+intercept) to a level that doesn’t exist in the factor.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> sum_code <span class="sc">+</span> <span class="dv">100</span>))</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="co">#&gt; Error in .switch_reference_if_needed(new_contrasts, reference_level, new_reference_index) : </span></span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a><span class="co">#&gt;   Reference level not found in factor levels</span></span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, cyl <span class="sc">~</span> sum_code <span class="sc">*</span> <span class="st">&quot;blah&quot;</span>))</span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a><span class="co">#&gt; Converting to factors: cyl</span></span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a><span class="co">#&gt; Error in .set_intercept(new_contrasts, set_intercept) : </span></span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a><span class="co">#&gt;   Specified level to use as intercept not found in factor level names</span></span></code></pre></div>
+<p>You’ll receive an error if you accidentally use <code>=</code>
+instead of <code>~</code></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, <span class="at">cyl =</span> sum_code))</span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a><span class="co">#&gt; Error : In `tools::buildVignettes(dir = &quot;.&quot;, tangle = TRUE)`: </span></span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a><span class="co">#&gt; `x` must be a formula</span></span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a><span class="co">#&gt; ℹ Did you use = instead of ~ when setting the contrast?</span></span></code></pre></div>
+<p>You’ll receive an error if you accidentally specify contrasts for the
+same variable more than once:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars,</span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>                         cyl <span class="sc">~</span> sum_code, </span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>                         cyl <span class="sc">~</span> scaled_sum_code))</span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a><span class="co">#&gt; Error : In `tools::buildVignettes(dir = &quot;.&quot;, tangle = TRUE)`: </span></span>
+<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a><span class="co">#&gt; Names must be unique.</span></span>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a><span class="co">#&gt; ✖ These names are duplicated:</span></span>
+<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a><span class="co">#&gt;   * &quot;cyl&quot; at locations 1 and 2.</span></span>
+<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a><span class="co">#&gt; ℹ Left hand side of multiple formulas evaluated to the same column name</span></span>
+<span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, </span>
+<span id="cb27-11"><a href="#cb27-11" tabindex="-1"></a>                         cyl <span class="sc">+</span> gear <span class="sc">~</span> sum_code,</span>
+<span id="cb27-12"><a href="#cb27-12" tabindex="-1"></a>                         cyl <span class="sc">~</span> scaled_sum_code))</span>
+<span id="cb27-13"><a href="#cb27-13" tabindex="-1"></a><span class="co">#&gt; Error : In `tools::buildVignettes(dir = &quot;.&quot;, tangle = TRUE)`: </span></span>
+<span id="cb27-14"><a href="#cb27-14" tabindex="-1"></a><span class="co">#&gt; Names must be unique.</span></span>
+<span id="cb27-15"><a href="#cb27-15" tabindex="-1"></a><span class="co">#&gt; ✖ These names are duplicated:</span></span>
+<span id="cb27-16"><a href="#cb27-16" tabindex="-1"></a><span class="co">#&gt;   * &quot;cyl&quot; at locations 1 and 3.</span></span>
+<span id="cb27-17"><a href="#cb27-17" tabindex="-1"></a><span class="co">#&gt; ℹ Left hand side of multiple formulas evaluated to the same column name</span></span>
+<span id="cb27-18"><a href="#cb27-18" tabindex="-1"></a></span>
+<span id="cb27-19"><a href="#cb27-19" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, </span>
+<span id="cb27-20"><a href="#cb27-20" tabindex="-1"></a>                         <span class="fu">where</span>(is.numeric) <span class="sc">~</span> sum_code, </span>
+<span id="cb27-21"><a href="#cb27-21" tabindex="-1"></a>                         cyl <span class="sc">~</span> scaled_sum_code))</span>
+<span id="cb27-22"><a href="#cb27-22" tabindex="-1"></a><span class="co">#&gt; Error : In `tools::buildVignettes(dir = &quot;.&quot;, tangle = TRUE)`: </span></span>
+<span id="cb27-23"><a href="#cb27-23" tabindex="-1"></a><span class="co">#&gt; Names must be unique.</span></span>
+<span id="cb27-24"><a href="#cb27-24" tabindex="-1"></a><span class="co">#&gt; ✖ These names are duplicated:</span></span>
+<span id="cb27-25"><a href="#cb27-25" tabindex="-1"></a><span class="co">#&gt;   * &quot;cyl&quot; at locations 2 and 12.</span></span>
+<span id="cb27-26"><a href="#cb27-26" tabindex="-1"></a><span class="co">#&gt; ℹ Left hand side of multiple formulas evaluated to the same column name</span></span>
+<span id="cb27-27"><a href="#cb27-27" tabindex="-1"></a></span>
+<span id="cb27-28"><a href="#cb27-28" tabindex="-1"></a>these_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;cyl&quot;</span>, <span class="st">&quot;gear&quot;</span>)</span>
+<span id="cb27-29"><a href="#cb27-29" tabindex="-1"></a></span>
+<span id="cb27-30"><a href="#cb27-30" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars, </span>
+<span id="cb27-31"><a href="#cb27-31" tabindex="-1"></a>                         <span class="fu">all_of</span>(these_vars) <span class="sc">~</span> sum_code, </span>
+<span id="cb27-32"><a href="#cb27-32" tabindex="-1"></a>                         <span class="fu">where</span>(is.numeric) <span class="sc">~</span> scaled_sum_code))</span>
+<span id="cb27-33"><a href="#cb27-33" tabindex="-1"></a><span class="co">#&gt; Error : In `tools::buildVignettes(dir = &quot;.&quot;, tangle = TRUE)`: </span></span>
+<span id="cb27-34"><a href="#cb27-34" tabindex="-1"></a><span class="co">#&gt; Names must be unique.</span></span>
+<span id="cb27-35"><a href="#cb27-35" tabindex="-1"></a><span class="co">#&gt; ✖ These names are duplicated:</span></span>
+<span id="cb27-36"><a href="#cb27-36" tabindex="-1"></a><span class="co">#&gt;   * &quot;cyl&quot; at locations 1 and 4.</span></span>
+<span id="cb27-37"><a href="#cb27-37" tabindex="-1"></a><span class="co">#&gt;   * &quot;gear&quot; at locations 2 and 12.</span></span>
+<span id="cb27-38"><a href="#cb27-38" tabindex="-1"></a><span class="co">#&gt; ℹ Left hand side of multiple formulas evaluated to the same column name</span></span></code></pre></div>
+<p>You’ll receive an error if you accidentally forget to pass the
+dataframe:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(cyl <span class="sc">~</span> sum_code))</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="co">#&gt; Error in enlist_contrasts(model_data, !!!formulas, verbose = verbose) : </span></span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a><span class="co">#&gt;   Formula passed to model_data, did you forget to pass a data frame?</span></span></code></pre></div>
+<p>You’ll receive an error if you forget to pass any contrasts
+formulas:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(mtcars))</span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a><span class="co">#&gt; Error in .warn_if_onelevel(lhs_variables[is_onelevel_factor]) : </span></span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a><span class="co">#&gt;   If factor names are not provided, the model data and factors being set must be provided</span></span></code></pre></div>
+<p>Variables with only one level will be ignored, but you’ll receive an
+error if there are no remaining variables with more than one level
+(i.e., if you <em>only</em> specify one-level factors). Note that you’ll
+still get the warning message.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="fu">try</span>(<span class="fu">set_contrasts</span>(<span class="fu">data.frame</span>(<span class="at">a =</span> <span class="fu">factor</span>(<span class="dv">1</span>)),</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>                         a <span class="sc">~</span> sum_code))</span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a><span class="co">#&gt; Warning: Contrasts undefined for factors with only one level: a</span></span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a><span class="co">#&gt; Error in enlist_contrasts(model_data, !!!formulas, verbose = verbose) : </span></span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a><span class="co">#&gt;   No factors with more than 1 level found</span></span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
